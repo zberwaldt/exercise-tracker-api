@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 def create_app(test_config=None):
     # create and configure app
@@ -34,5 +34,8 @@ def create_app(test_config=None):
         
     from . import api
     app.register_blueprint(api.bp)
+
+    from . import db
+    db.init_app(app)
 
     return app
