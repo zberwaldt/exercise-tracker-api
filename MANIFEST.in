@@ -1,0 +1,4 @@
+include exercise_tracker_api/schema.sql
+graft exercise_tracker_api/static
+graft exercise_tracker_api/templates
+global-exclude *.pyc
