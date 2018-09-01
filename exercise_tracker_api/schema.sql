@@ -4,13 +4,14 @@ DROP TABLE IF EXISTS exercise;
 CREATE TABLE user (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE NOT NULL,
+    user_id TEXT UNIQUE NOT NULL
 );
 
 CREATE TABLE exercise (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    userID INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
     body TEXT NOT NULL,
     duration TEXT NOT NULL,
     date_of TEXT NOT NULL,
-    FOREIGN KEY (userID) REFERENCES user (id)
+    FOREIGN KEY (user_id) REFERENCES user (user_id)
 );
