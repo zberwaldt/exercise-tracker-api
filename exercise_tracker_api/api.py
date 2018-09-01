@@ -107,12 +107,34 @@ def add_exercises():
 def get_exercises():
     # Get database so you can query it!
     db = get_db()
-
-    if not request.args.get('user_id'):        
+    user_id = request.args.get('user_id')
+    print(user_id)
+    
+    # a user_id is required to request exercise data.
+    if user_id is None:        
         flash("You must provide an user_ID in your GET request")
-        return redirect(url_for('index'))
+      
+    
+    # also check to make sure the ID is valid. i.e. exists
+    elif db.execute(
+        'SELECT id FROM user WHERE user_id = ?',
+        (user_id,)
+    ).fetchone() is None:
+        flash("No such user found. Please double check your spelling.")
     else:
-        return jsonify({"message": "Route not fully implemented"})
-
+        user_exercises = db.cursor().execute(
+            'SELECT * FROM exercise WHERE user_id = ?',
+            (user_id,)
+        ).fetchone()
+        exercise_data = {
+            "user_id": user_exercises['user_id'],
+            "description": user_exercises['body'],
+            "duration": user_exercises['duration'],
+            "date": user_exercises['date_of']
+        }
+        return jsonify(exercise_data)
+        
+    return redirect(url_for('index'))    
+    
 # fc89411a jocko
 # e29af261 zberwaldt
