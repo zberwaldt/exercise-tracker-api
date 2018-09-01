@@ -9,7 +9,8 @@
 </head>
 <body>
     <header>
-        <h1>Welcome to the exercise tracker API</h1>
+        <h1>Exercise Tracker API</h1>
+        <h2>An exercise logging microservice</h2>
     </header>
     {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -19,29 +20,43 @@
         {% endif %}
     {% endwith %}
     <main>
-        <form class="post-form" action="api/exercise/new-user" method="post">
-            <h2>Create a New User</h2>   
+        <form id="add-user-form" class="post-form" action="api/exercise/new-user" method="post">
+            <h2>Create a New User</h2>
+            <code class="instructions">
+                POST /api/exercise/new-user
+            </code>   
             <label for="username">
                 Username:
-                <input type="text" name="username" id="username" placeholder="username">
+                <input type="text" name="username" id="username" placeholder="username" required pattern="\w+">
             </label>
             <input type="submit" value="Add User">
         </form>
-        <form class="post-form" action="api/exercise/add" method="post">
+        <form id="add-exercise-form" class="post-form" action="api/exercise/add" method="post">
             <h2>Add exercises</h2>
+            <code class="instructions">
+                POST /api/exercise/add
+            </code>
             <label for="userId">
                 User ID:
-                <input type="text" name="user-id" id="userId" placeholder="user id" required></label>
-                <span class="error"></span>
+                <input type="text" name="user-id" id="userId" placeholder="user id" required>
+              
+            </label>
+                
             <label for="description">
                 Description:
-                <input type="text" name="description" id="description" placeholder="description" required></label>
+                <input type="text" name="description" id="description" placeholder="description" required>
+              
+            </label>
             <label for="duration">
                 Duration:
-                <input type="text" name="duration" id="duration" placeholder="duration" required pattern="\d"></label>
+                <input type="text" name="duration" id="duration" placeholder="duration" required pattern="\d+">
+              
+            </label>
             <label for="date">
                 Date:
-                <input type="text" name="date" id="date" placeholder="date" required pattern="\d{4}-\d{2}-\d{2}"></label>
+                <input type="text" name="date" id="date" placeholder="date (YYYY-MM-DD)" required pattern="\d{4}-\d{2}-\d{2}">
+              
+            </label>
             <input type="submit" value="add exercise">
         </form>
         <div>
