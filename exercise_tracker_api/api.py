@@ -82,6 +82,8 @@ def add_exercises():
         exercise['description'] = description
     if duration == '':
         errors.append("no duration provided")
+    elif None:
+        pass
     else:
         exercise['duration'] = duration
     if date == '':
@@ -123,15 +125,22 @@ def get_exercises():
         flash("No such user found. Please double check your spelling.")
     else:
         user_exercises = db.cursor().execute(
-            'SELECT * FROM exercise WHERE user_id = ?',
+            'SELECT e.user_id, body, duration, date_of, username FROM exercise e'
+            ' JOIN user u ON e.user_id = u.user_id WHERE e.user_id = ?',
             (user_id,)
-        ).fetchone()
-        exercise_data = {
-            "user_id": user_exercises['user_id'],
-            "description": user_exercises['body'],
-            "duration": user_exercises['duration'],
-            "date": user_exercises['date_of']
-        }
+        ).fetchall()
+
+        exercise_data = []
+
+        for exercise in user_exercises:
+            newEntry = {
+                'username': exercise['username'],
+                'description': exercise['body'],
+                'duration': exercise['duration'],
+                'date': exercise['date_of'],
+            }
+            exercise_data.append(newEntry)
+        
         return jsonify(exercise_data)
         
     return redirect(url_for('index'))    

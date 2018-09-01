@@ -19,7 +19,7 @@
         {% endif %}
     {% endwith %}
     <main>
-        <form action="api/exercise/new-user" method="post">
+        <form class="post-form" action="api/exercise/new-user" method="post">
             <h2>Create a New User</h2>   
             <label for="username">
                 Username:
@@ -27,23 +27,26 @@
             </label>
             <input type="submit" value="Add User">
         </form>
-        <form action="api/exercise/add" method="post">
+        <form class="post-form" action="api/exercise/add" method="post">
             <h2>Add exercises</h2>
             <label for="userId">
                 User ID:
-                <input type="text" name="user-id" id="userId" placeholder="user id"></label>
+                <input type="text" name="user-id" id="userId" placeholder="user id" required></label>
                 <span class="error"></span>
             <label for="description">
                 Description:
-                <input type="text" name="description" id="description" placeholder="description"></label>
+                <input type="text" name="description" id="description" placeholder="description" required></label>
             <label for="duration">
                 Duration:
-                <input type="text" name="duration" id="duration" placeholder="duration"></label>
+                <input type="text" name="duration" id="duration" placeholder="duration" required pattern="\d"></label>
             <label for="date">
                 Date:
-                <input type="text" name="date" id="date" placeholder="date"></label>
+                <input type="text" name="date" id="date" placeholder="date" required pattern="\d{4}-\d{2}-\d{2}"></label>
             <input type="submit" value="add exercise">
         </form>
+        <div>
+            <code>GET</code>
+        </div>
     </main>
     <footer>
         Zach Berwaldt &copy; 2018

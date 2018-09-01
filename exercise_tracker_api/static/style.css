@@ -1,3 +1,52 @@
+html {
+    font-size: 16px;
+    font-family: sans-serif;
+}
+
+html, body {
+    height: 100vh;
+    width: 100vw;
+}
+
+body, .post-form label {
+    display: flex;
+    flex-direction: column;
+}
+
+body {
+    margin: 0;
+    background: hsla(0, 0%, 92%, 1);
+}
+
+main {
+    flex-grow: 2;
+}
+
+footer {
+    height: 125px;
+    background: rgb(60, 71, 69);
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    color:white;
+    font-weight: 800;
+}
+
 .error {
     color: red;
+}
+
+.post-form {
+    background: hsla(150, 0%, 98%, 1);
+    box-shadow: 0 3px 6px 1px hsla(0, 0%, 0%, .2);
+    border-radius: 5px;
+    padding: 16px;
+    margin: 32px;
+    min-width: 350px;
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.post-form label {
+    margin: 8px 0;
 }
