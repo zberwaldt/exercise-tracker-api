@@ -95,7 +95,7 @@ def add_exercises():
     # If there IS NOT errors AND there IS an exercise
     if not errors and exercise:
         newEntry = db.cursor().execute(
-            'INSERT INTO exercise (user_id, body, duration, date_of) VALUES (?, ?, ?, ?)',
+            'INSERT INTO exercise (user_id, details, duration, date_of) VALUES (?, ?, ?, date(?))',
             (user_id, description, duration, date)
         )
         db.commit()
@@ -134,13 +134,17 @@ def get_exercises():
     
     to_date = request.args.get('to')
     
-    if to_date and not validate(to_date):
+    if to_date and validate(to_date):
     
         errors.append("You did not provide a correct date")
     
-    elif to_date is not None:
+    elif to_date is None:
+       
+        pass
     
-        query_params.append(from_date)
+    else:
+    
+        query_params.append(to_date)
    
     limit = request.args.get('limit')
     
@@ -164,10 +168,12 @@ def get_exercises():
     
     elif from_date and to_date:
     
-        db_query += " BETWEEN date(?) AND date(?)"
+        db_query += " AND date(date_of) BETWEEN date(?) AND date(?)"
     
     if limit:
         db_query += " LIMIT ?"
+
+    db_query += " ORDER BY date_of DESC;"
 
     print(db_query)
     print(query_params)
@@ -192,7 +198,7 @@ def get_exercises():
         for exercise in user_exercises:
             newEntry = {
                 'username': exercise['username'],
-                'description': exercise['body'],
+                'description': exercise['details'],
                 'duration': exercise['duration'],
                 'date': exercise['date_of'],
             }
@@ -203,11 +209,6 @@ def get_exercises():
         flash("No entries found!")
     
     return redirect(url_for('index'))    
-    
-# fc89411a jocko
-# e29af261 zberwaldt
-# d95c4a62 kyleinapile
-# 093d8745 timmytinkles
 
 def validate(date_text):
     try: 
