@@ -57,7 +57,7 @@ def add_exercises():
     db = get_db()
 
     user_id = request.form['user-id']
-    description = request.form['description']
+    details = request.form['details']
     duration = request.form['duration']
     date = request.form['date']
 
@@ -77,10 +77,10 @@ def add_exercises():
     else:
         exercise['user_id'] = user_id
 
-    if description == '':
-        errors.append("no description provided")
+    if details == '':
+        errors.append("no details provided")
     else:
-        exercise['description'] = description
+        exercise['details'] = details
     if duration == '':
         errors.append("no duration provided")
     elif None:
@@ -96,7 +96,7 @@ def add_exercises():
     if not errors and exercise:
         newEntry = db.cursor().execute(
             'INSERT INTO exercise (user_id, details, duration, date_of) VALUES (?, ?, ?, date(?))',
-            (user_id, description, duration, date)
+            (user_id, details, duration, date)
         )
         db.commit()
         # return the json data of your new exercise
@@ -160,7 +160,7 @@ def get_exercises():
         query_params.append(limit)
     
     # Also, create a query string 
-    db_query = "SELECT e.user_id, body, duration, date_of, username FROM exercise e JOIN user u ON e.user_id = u.user_id WHERE e.user_id = ?"
+    db_query = "SELECT e.user_id, details, duration, date_of, username FROM exercise e JOIN user u ON e.user_id = u.user_id WHERE e.user_id = ?"
     
     if from_date and not to_date:
     
@@ -173,10 +173,6 @@ def get_exercises():
     if limit:
         db_query += " LIMIT ?"
 
-    db_query += " ORDER BY date_of DESC;"
-
-    print(db_query)
-    print(query_params)
     # a user_id is required to request exercise data.
     if user_id is None:        
         flash("You must provide an user_ID in your GET request")    
@@ -198,7 +194,7 @@ def get_exercises():
         for exercise in user_exercises:
             newEntry = {
                 'username': exercise['username'],
-                'description': exercise['details'],
+                'details': exercise['details'],
                 'duration': exercise['duration'],
                 'date': exercise['date_of'],
             }
