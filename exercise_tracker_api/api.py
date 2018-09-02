@@ -1,4 +1,5 @@
 import functools
+import datetime
 import uuid
 
 from flask import (
@@ -109,27 +110,67 @@ def add_exercises():
 def get_exercises():
     # Get database so you can query it!
     db = get_db()
+        
+    # Get the user_id parameter from the request, because it is required.
     user_id = request.args.get('user_id')
-    print(user_id)
+
+    # create an array for errors
+    errors = []
+
+    # an array for holding params
+    query_params = [user_id]
+
+    # this are optional arguments to allow for more specific requests.
+    from_date = request.args.get('from')
+
+    if from_date and validate(from_date):
+        errors.append("You did not provide a correct date")
+    elif from_date is not None:
+        query_params.append(from_date)
+        print(query_params)
     
+    to_date = request.args.get('to')
+    if to_date and not validate(to_date):
+        errors.append("You did not provide a correct date")
+    elif to_date is not None:
+        query_params.append(from_date)
+   
+    limit = request.args.get('limit')
+    # if there IS a limit but it's not an INT flash an error
+    if limit and type(limit) is not int:
+        errors.append("Your limit paramter was not a integer")
+    # otherwise add it the params list.
+    elif limit is not None:
+        query_params.append(limit)
+    
+    # Also, create a query string 
+    db_query = "SELECT e.user_id, body, duration, date_of, username FROM exercise e JOIN user u ON e.user_id = u.user_id WHERE e.user_id = ?"
+    if from_date and not to_date:
+        db_query += " AND date(date_of) >= ?"
+    elif from_date and to_date:
+        db_query += " BETWEEN date(?) AND date(?)"
+    
+    if limit:
+        db_query += " LIMIT 10"
+
+    print(db_query)
+    print(query_params)
     # a user_id is required to request exercise data.
     if user_id is None:        
-        flash("You must provide an user_ID in your GET request")
-      
-    
+        flash("You must provide an user_ID in your GET request")    
+
     # also check to make sure the ID is valid. i.e. exists
-    elif db.execute(
-        'SELECT id FROM user WHERE user_id = ?',
-        (user_id,)
-    ).fetchone() is None:
+    elif db.execute( 'SELECT id FROM user WHERE user_id = ?', (user_id,)).fetchone() is None:
         flash("No such user found. Please double check your spelling.")
+        
+    # Finally retrieve the data.
     else:
         user_exercises = db.cursor().execute(
-            'SELECT e.user_id, body, duration, date_of, username FROM exercise e'
-            ' JOIN user u ON e.user_id = u.user_id WHERE e.user_id = ?',
-            (user_id,)
+            db_query,
+            query_params
         ).fetchall()
 
+    if user_exercises:
         exercise_data = []
 
         for exercise in user_exercises:
@@ -142,8 +183,19 @@ def get_exercises():
             exercise_data.append(newEntry)
         
         return jsonify(exercise_data)
-        
+    else:
+        flash("No entries found!")
+    
     return redirect(url_for('index'))    
     
 # fc89411a jocko
 # e29af261 zberwaldt
+# d95c4a62 kyleinapile
+
+
+def validate(date_text):
+    try: 
+        datetime.datetime.strptime(date_text, '%Y-%m-%d')
+    except ValueError:
+        return False
+    

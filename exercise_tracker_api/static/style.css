@@ -48,13 +48,13 @@ footer {
 }
 
 code.instructions {
-    margin: 8px;
+    margin: 8px 0;
     background: rgb(232, 233, 174);
     padding: 2px;
 }
 
 .error {
-    border-radius: 5px;
+    border-radius: 2px;
     color: rgba(255, 255, 255, .9);
     background: rgb(209, 36, 36);
     font-weight: 800;
@@ -67,7 +67,8 @@ code.instructions {
 .post-form {
     background: hsla(150, 0%, 98%, 1);
     box-shadow: 0 3px 6px 1px hsla(0, 0%, 0%, .2);
-    border-radius: 5px;
+    border-radius: 3px;
+    border: 1px solid #dddfe2;
     padding: 16px;
     margin: 32px;
     min-width: 350px;
