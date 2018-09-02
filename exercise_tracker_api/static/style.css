@@ -26,6 +26,7 @@ main {
     flex-grow: 2;
     max-width: 1024px;
     margin: 0 auto;
+    padding: 0 16px;
 }
 
 header, footer {
@@ -58,7 +59,7 @@ code.instructions {
     color: rgba(255, 255, 255, .9);
     background: rgb(209, 36, 36);
     font-weight: 800;
-    padding: 24px 16px;
+    padding: 16px;
     box-shadow: 0 1px 3px 2px hsla(0, 0%, 0%, .4);
     min-width: 75%;
     margin: 16px auto;
@@ -70,7 +71,7 @@ code.instructions {
     border-radius: 3px;
     border: 1px solid #dddfe2;
     padding: 16px;
-    margin: 32px;
+    margin-top: 16px;
     min-width: 350px;
     display: inline-flex;
     flex-direction: column;
@@ -80,3 +81,6 @@ code.instructions {
     margin: 8px 0;
 }
 
+.get-request-details {
+    margin: 0 auto;
+}

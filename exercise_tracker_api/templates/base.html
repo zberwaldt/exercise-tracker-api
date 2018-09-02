@@ -59,8 +59,11 @@
             </label>
             <input type="submit" value="add exercise">
         </form>
-        <div>
-            <code>GET</code>
+        <div class="get-request-details">
+            <p><strong>GET user's exercise log</strong> <code class="instructions">GET /api/exercise/log?{user_id}[&from][&to][&limit]</code></p>
+            <p><strong>{}</strong>=required, <strong>[]</strong>=optional</p>
+            <p><strong>from, to</strong>=dates(YYYY-MM-DD); <strong>limit</strong>=number (integer)</p>
+            <p><strong>test ids:</strong> 00000000, 0abc0023</p>
         </div>
     </main>
     <footer>

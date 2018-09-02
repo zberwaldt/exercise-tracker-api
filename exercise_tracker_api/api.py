@@ -86,7 +86,7 @@ def add_exercises():
     elif None:
         pass
     else:
-        exercise['duration'] = duration
+        exercise['duration'] = int(duration)
     if date == '':
         errors.append("no date provided")
     else:
@@ -122,36 +122,52 @@ def get_exercises():
 
     # this are optional arguments to allow for more specific requests.
     from_date = request.args.get('from')
-
+    # check to see if the from_date is truthy and is valid
     if from_date and validate(from_date):
+        # if it is not, add to the errors array.
         errors.append("You did not provide a correct date")
-    elif from_date is not None:
+    # otherwise, add the query to the params list.
+    elif from_date is None:
+        pass
+    else:
         query_params.append(from_date)
-        print(query_params)
     
     to_date = request.args.get('to')
+    
     if to_date and not validate(to_date):
+    
         errors.append("You did not provide a correct date")
+    
     elif to_date is not None:
+    
         query_params.append(from_date)
    
     limit = request.args.get('limit')
+    
     # if there IS a limit but it's not an INT flash an error
-    if limit and type(limit) is not int:
-        errors.append("Your limit paramter was not a integer")
+    if limit and type(int(limit)) is not int:
+    
+        errors.append("Your limit parameter was not a integer")
+    elif limit is None:
+        pass
     # otherwise add it the params list.
-    elif limit is not None:
+    else:
+    
         query_params.append(limit)
     
     # Also, create a query string 
     db_query = "SELECT e.user_id, body, duration, date_of, username FROM exercise e JOIN user u ON e.user_id = u.user_id WHERE e.user_id = ?"
+    
     if from_date and not to_date:
-        db_query += " AND date(date_of) >= ?"
+    
+        db_query += " AND date(date_of) >= date(?)"
+    
     elif from_date and to_date:
+    
         db_query += " BETWEEN date(?) AND date(?)"
     
     if limit:
-        db_query += " LIMIT 10"
+        db_query += " LIMIT ?"
 
     print(db_query)
     print(query_params)
@@ -191,7 +207,7 @@ def get_exercises():
 # fc89411a jocko
 # e29af261 zberwaldt
 # d95c4a62 kyleinapile
-
+# 093d8745 timmytinkles
 
 def validate(date_text):
     try: 
