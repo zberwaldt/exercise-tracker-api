@@ -8,7 +8,7 @@ from flask import (
 
 from exercise_tracker_api.db import get_db
 
-bp = Blueprint('auth', __name__, url_prefix='/api')
+bp = Blueprint('api', __name__, url_prefix='/api')
 
 
 @bp.route('/', methods=('GET', 'POST'))
