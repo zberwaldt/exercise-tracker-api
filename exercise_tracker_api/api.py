@@ -6,49 +6,73 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for, jsonify
 )
 
+# import access to database.
 from exercise_tracker_api.db import get_db
 
+# Define a blue print
 bp = Blueprint('api', __name__, url_prefix='/api')
 
-
+# This is a dumby route I need to remove.
 @bp.route('/', methods=('GET', 'POST'))
 def getData():
     if request.method == 'GET':
         d = {"name": "Zach", "id": "123456"}
         return jsonify(d)
 
+# Define a route that is responsible for handling adding users to the database.
 @bp.route('/exercise/new-user', methods=['POST'])
 def add_user():
     
     username = request.form['username']
     
     # Generate a special ID per user, from a uuid take only first 8 characters 
-    # for brevity.
+    # for brevity. Although in hind sight this might be redundant. 
+    # I got the idea from a node api I looked at briefly for reference.
     user_id = str(uuid.uuid4())[:8]
     
+    # get the database
     db = get_db()
     
+    # initialize error variable.
     error = None
+
+    # if username is falsy
     if not username:
+        # provide an error
         error = "Please provide a username!"
+
+    # check to see if the username exists to prevent duplicates
     elif db.execute(
             'SELECT id FROM user WHERE username = ?', (username,)
         ).fetchone() is not None:
+        # if it does provide an error. 
+        # I don't know why I formatted the error this way. I can't remember.
             error = 'user {} is already taken.'.format(username)
     
+    # if there is no error
     if error is None:
+
+        # create a new entry in teh database, I used cursor because originally 
+        # I was going to use the row ID, and using cursor lets you get the 
+        # last inserted id
         newEntry = db.cursor().execute(
             'INSERT INTO user (username, user_id) VALUES (?, ?)',
             (username, user_id)
         )
+
+        # commit to the database
         db.commit()
+
+        # return the data as json, this is supposed to be like a microservice.
         return jsonify({
             "username": username,
             "user_id": user_id
         })
     
+    # flash the error
     flash(error)
     
+    # redirect to the index, I probably want to address this.
     return redirect(url_for('index'))
 
 @bp.route('/exercise/add', methods=['POST'])
@@ -206,6 +230,9 @@ def get_exercises():
     
     return redirect(url_for('index'))    
 
+# create a validate function that makes sure a date is a valid date. 
+# It only returns false. if the Try is successful it doesn't return anything
+# So that's something I want to address.
 def validate(date_text):
     try: 
         datetime.datetime.strptime(date_text, '%Y-%m-%d')
