@@ -84,3 +84,52 @@ code.instructions {
 .get-request-details {
     margin: 0 auto;
 }
+
+#add-user-form::before, #add-exercise-form::before {
+    content: '* All fields are required';
+    margin-bottom: 8px;
+}
+
+#add-user-form::before, 
+#add-exercise-form::before,
+label[for='duration']::after,
+label[for='details']::after,
+label[for='date']::after,
+label[for='userId']::after,
+label[for='username']::after
+{
+    color: hsla(0, 0%, 0%, .4);
+    font-size: 10px;
+}
+
+label[for='duration']::after {
+    content: '* In minutes';
+}
+
+label[for='details']::after {
+    content: '* text only'
+}
+
+label[for='date']::after {
+    content: '* Formatted as: YYYY-MM-DD'
+}
+
+label[for='userId']::after {
+    content: '* Use provided ID, no recovery currently possible.'
+}
+
+label[for='username']::after {
+    content: '* Any alphanumeric characters'
+}
+
+.bugs-message {
+    position: fixed;
+    left: 8px;
+    bottom: 8px;
+    width: 175px;
+    padding: 8px;
+    background: white;
+    box-shadow: 0 3px 6px 1px hsla(0, 0%, 0%, .2);
+    border-radius: 3px;
+    border: 1px solid #dddfe2;
+}
