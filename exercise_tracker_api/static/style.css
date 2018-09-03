@@ -78,7 +78,7 @@ code.instructions {
 }
 
 .post-form label {
-    margin: 8px 0;
+    margin: 4px 0;
 }
 
 .get-request-details {
@@ -129,7 +129,7 @@ label[for='username']::after {
     width: 175px;
     padding: 8px;
     background: white;
-    box-shadow: 0 3px 6px 1px hsla(0, 0%, 0%, .2);
+    box-shadow: 0 6px 12px 2px hsla(0, 0%, 0%, .8);
     border-radius: 3px;
     border: 1px solid #dddfe2;
 }
