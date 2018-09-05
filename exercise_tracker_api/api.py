@@ -230,6 +230,34 @@ def get_exercises():
     
     return redirect(url_for('index'))    
 
+
+@bp.route('/user/<username>', methods=['GET'])
+def get_userid(username):
+    db = get_db()
+
+    user = db.execute("SELECT * FROM user WHERE username=?", (username,)).fetchone()
+
+    if user is None:
+        flash("No user found.")
+        redirect(url_for('index'))
+    else:
+        return jsonify({"username": user['username'], "user_id": user['user_id']})
+
+
+@bp.route('/users', methods=['GET'])
+def get_users():
+    db = get_db()
+
+    users = db.execute("SELECT * FROM user").fetchall()
+
+    all_users = []
+
+    for user in users:
+        all_users.append({"username": user['username'], "user_id": user['user_id']})
+
+    return jsonify(all_users)
+
+    
 # create a validate function that makes sure a date is a valid date. 
 # It only returns false. if the Try is successful it doesn't return anything
 # So that's something I want to address.
