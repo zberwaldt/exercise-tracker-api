@@ -10,25 +10,11 @@ from flask import (
 from exercise_tracker_api.db import get_db
 
 # Define a blue print
-bp = Blueprint('api', __name__, url_prefix='/api')
-
-# This is a dumby route I need to remove.
-@bp.route('/', methods=('GET', 'POST'))
-def getData():
-    if request.method == 'GET':
-        d = {"name": "Zach", "id": "123456"}
-        return jsonify(d)
+bp = Blueprint('user', __name__, url_prefix='/user')
 
 # Define a route that is responsible for handling adding users to the database.
-@bp.route('/exercise/new-user', methods=['POST'])
-def add_user():
-    
-    username = request.form['username']
-    
-    # Generate a special ID per user, from a uuid take only first 8 characters 
-    # for brevity. Although in hind sight this might be redundant. 
-    # I got the idea from a node api I looked at briefly for reference.
-    user_id = str(uuid.uuid4())[:8]
+@bp.route('/<username>/profile', methods=['GET'])
+def user_profile(username):
     
     # get the database
     db = get_db()
