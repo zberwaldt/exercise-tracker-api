@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form id="add-user-form" class="post-form" action="api/exercise/new-user" method="post" autocomplete="off">
+    <h2>Create a New User</h2>
+    <code class="instructions">
+        POST /api/exercise/new-user
+    </code>   
+    <label for="username">
+        Username:
+        <input type="text" name="username" id="username" placeholder="username" required pattern="\w+">
+    </label>
+    <p style="color:red;">Write down your ID, no recovery is possible.</p>
+    <input type="submit" value="Add User">
+</form>
+<form id="add-exercise-form" class="post-form" action="api/exercise/add" method="post" autocomplete="off">
+    <h2>Add exercises</h2>
+    <code class="instructions">
+        POST /api/exercise/add
+    </code>
+    <label for="userId">
+        User ID:
+        <input type="text" name="user-id" id="userId" placeholder="user id" required pattern="\w+">
+    </label>
+        
+    <label for="details">
+        Details:
+        <input type="text" name="details" id="details" placeholder="details" required pattern="\w+">
+      
+    </label>
+    <label for="duration">
+        Duration:
+        <input type="text" name="duration" id="duration" placeholder="duration" required pattern="\d+">
+      
+    </label>
+    <label for="date">
+        Date:
+        <input type="text" name="date" id="date" placeholder="date (YYYY-MM-DD)" required pattern="\d{4}-\d{2}-\d{2}">
+    </label>
+    <input type="submit" value="add exercise">
+</form>
+<div class="get-request-details">
+    <p><strong>GET user's exercise log</strong> <code class="instructions">GET /api/exercise/log?{user_id}[&from][&to][&limit]</code></p>
+    <p><strong>{}</strong>=required, <strong>[]</strong>=optional</p>
+    <p><strong>from, to</strong>=dates(YYYY-MM-DD); <strong>limit</strong>=number (integer)</p>
+    <p><strong>test ids:</strong> 00000000, 0abc0023</p>
+</div>
+<div class="bugs-message">Hello,<br/>
+    If you run into any issues, please file a bug report <a  href="https://github.com/zberwaldt/exercise-tracker-api/issues/new" target="_blank" rel="noopener">here.</a>
+</div>
+
+{% endblock %}
