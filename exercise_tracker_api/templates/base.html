@@ -5,16 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <title>Exercise Tracker API</title>
+    <title>{% block title %}{% endblock %} - Exercise Tracker API</title>
 </head>
 <body>
     <header>
+        {% block header %}
         <h1>Exercise Tracker API</h1>
         <h2>An exercise logging microservice</h2>
+        {% endblock %}
     </header>
     <nav>
         <a href="{{ url_for('index') }}">Home</a>
         <a href="{{ url_for('user.all_users') }}">User List</a>
+        {% if g.user %}
+            <li><span>{{ g.user['username'] }}</span></li>
+            <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
+        {% else %}
+        <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+        <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
+        {% endif %}
     </nav>
     {% with messages = get_flashed_messages() %}
         {% if messages %}

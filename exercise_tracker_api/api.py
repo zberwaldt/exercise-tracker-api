@@ -47,7 +47,7 @@ def add_user():
         ).fetchone() is not None:
         # if it does provide an error. 
         # I don't know why I formatted the error this way. I can't remember.
-            error = 'user {} is already taken.'.format(username)
+            error = f'user {username} is already taken.'
     
     # if there is no error
     if error is None:
@@ -55,7 +55,7 @@ def add_user():
         # create a new entry in teh database, I used cursor because originally 
         # I was going to use the row ID, and using cursor lets you get the 
         # last inserted id
-        newEntry = db.cursor().execute(
+        db.cursor().execute(
             'INSERT INTO user (username, user_id) VALUES (?, ?)',
             (username, user_id)
         )
@@ -118,7 +118,7 @@ def add_exercises():
 
     # If there IS NOT errors AND there IS an exercise
     if not errors and exercise:
-        newEntry = db.cursor().execute(
+        db.cursor().execute(
             'INSERT INTO exercise (user_id, details, duration, date_of) VALUES (?, ?, ?, date(?))',
             (user_id, details, duration, date)
         )

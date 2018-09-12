@@ -4,18 +4,32 @@ DROP TABLE IF EXISTS exercise;
 CREATE TABLE user (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE NOT NULL,
-    user_id TEXT UNIQUE NOT NULL
+    password TEXT NOT NULL,
+    user_id TEXT UNIQUE NOT NULL,
+    profile_id INTEGER,
+    FOREIGN KEY (profile_id) REFERENCES profile(id)
 );
 
 CREATE TABLE exercise (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
+    user_id TEXT NOT NULL,
     details TEXT NOT NULL,
     duration INTEGER NOT NULL,
     date_of TEXT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user (user_id)
 );
 
+CREATE TABLE profile (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id TEXT NOT NULL,
+    username TEXT NOT NULL, 
+    firstname TEXT,
+    lastname TEXT,
+    bio TEXT,
+    twitter TEXT,
+    github TEXT,
+    FOREIGN KEY (user_id) REFERENCES user (user_id)
+)
 
 INSERT INTO user (username, user_id) VALUES ('test', '00000000'), ('test2', '0abc0023');
 
