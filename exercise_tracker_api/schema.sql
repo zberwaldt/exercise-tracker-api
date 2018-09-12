@@ -22,7 +22,6 @@ CREATE TABLE exercise (
 CREATE TABLE profile (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id TEXT NOT NULL,
-    username TEXT NOT NULL, 
     firstname TEXT,
     lastname TEXT,
     bio TEXT,

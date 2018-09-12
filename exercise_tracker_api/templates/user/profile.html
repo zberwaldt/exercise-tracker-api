@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+ {{user.username}}'s profile
+{% endblock %}
+
+{% block content %}
+<h3> {{user.username}}'s Profile </h3>
+<p>
+    {{user.bio}}
+</p>
+<a rel="noopenner" 
+   target="_blank" 
+   href="{{user.twitter}}">Twitter</a>
+{% endblock %}

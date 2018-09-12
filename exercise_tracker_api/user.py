@@ -30,6 +30,16 @@ def user_profile(userid):
     # get the database
     db = get_db()
     
+    user = db.execute(
+        'SELECT username FROM user WHERE user_id=?',
+        (userid,)
+    ).fetchone() 
+    
+    if user is not None:
+        return render_template('user/profile.html', user=user)
+    else:
+        flash('No user exists')
+
     # redirect to the index, I probably want to address this.
     return redirect(url_for('index'))
 
