@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form id="create-profile-form" 
+      class="post-form" 
+      method="POST" 
+      autocomplete="off">
+    <h2>Create Profile</h2>
+    <label for="firstname">
+        First name:
+        <input type="text" 
+               name="firstname" 
+               id="firstname" 
+               placeholder="firstname" 
+               pattern="\w+">
+    </label>
+    <label for="lastname">
+        Last name:
+        <input type="text" 
+               name="lastname" 
+               id="lastname" 
+               placeholder="lastname" 
+               pattern="\w+">
+    </label>
+    <label for="bio">
+        Bio:
+        <textarea id="bio" 
+                  name="bio" 
+                  placeholder="bio" 
+                  pattern="\w+">
+        </textarea>
+    </label>
+    <label for="twitter">
+        Twitter:
+        <input type="url" 
+               name="twitter" 
+               id="twitter" 
+               placeholder="twitter" 
+               pattern="https://twitter.com/\w+">
+    </label>
+    <label for="github">
+        Github:
+        <input type="url" 
+               name="github" 
+               id="github" 
+               pattern="https://github.com/\w+">
+    </label>
+    <input type="submit" value="create profile">
+</form>
+
+{% endblock %}

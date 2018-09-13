@@ -1,4 +1,5 @@
 import functools
+import uuid
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
@@ -12,6 +13,8 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
+    user_id = str(uuid.uuid4())[:8]
+
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -30,8 +33,8 @@ def register():
 
         if error is None:
             db.execute(
-                'INSERT INTO user (username, password) VALUES (?, ?)',
-                (username, generate_password_hash(password))
+                'INSERT INTO user (username, password, user_id) VALUES (?, ?, ?)',
+                (username, generate_password_hash(password), user_id)
             )
             db.commit()
             return redirect(url_for('auth.login'))
@@ -58,7 +61,7 @@ def login():
         
         if error is None:
             session.clear()
-            session['user_id'] = user['id']
+            session['user_id'] = user['user_id']
             return redirect(url_for('index'))
 
         flash(error)
@@ -78,7 +81,7 @@ def load_logged_in_user():
         g.user = None
     else:
         g.user = get_db().execute(
-            'SELECT * FROM user WHERE id = ?', (user_id,)
+            'SELECT * FROM user WHERE user_id = ?', (user_id,)
         ).fetchone()
 
 

@@ -5,11 +5,32 @@
 {% endblock %}
 
 {% block content %}
+{% if user.user_id == g.user['user_id'] %}
+    You are the owner of this profile.
+{% endif %}
+{% if user is not none %}
 <h3> {{user.username}}'s Profile </h3>
-<p>
-    {{user.bio}}
-</p>
+<section class="info">
+    <h4>User Bio</h4>
+    {% if user.bio %}
+    <p>
+        {{user.bio}}
+    </p>
+    {% else %}
+    <p>
+        No bio
+    </p>
+    {% endif %}
+</section>
+<section class="social">
+{% if user.twitter %}
 <a rel="noopenner" 
    target="_blank" 
    href="{{user.twitter}}">Twitter</a>
+{% endif %}
+</section>
+{% else %}
+    This user has not created their profile yet.
+{% endif %}
+
 {% endblock %}

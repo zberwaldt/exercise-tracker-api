@@ -24,21 +24,26 @@ def all_users():
     return render_template('users/user_list.html', users=users)
 
 # Define a route that is responsible for handling adding users to the database.
-@bp.route('/<userid>/profile', methods=['GET'])
+@bp.route('/<userid>/profile', methods=['GET', 'POST'])
 def user_profile(userid):
-
     # get the database
     db = get_db()
     
     user = db.execute(
-        'SELECT username FROM user WHERE user_id=?',
+        'SELECT * FROM profile p JOIN user u ON  p.user_id = u.user_id WHERE p.user_id=?',
         (userid,)
-    ).fetchone() 
+    ).fetchone()
+
+    print(user)
     
+
+
     if user is not None:
         return render_template('user/profile.html', user=user)
+    elif g.user['user_id'] != userid:
+        return render_template('user/profile.html', user=user)
     else:
-        flash('No user exists')
+        return redirect(url_for('api.add_profile'))
 
     # redirect to the index, I probably want to address this.
     return redirect(url_for('index'))

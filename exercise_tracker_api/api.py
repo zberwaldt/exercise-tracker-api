@@ -230,6 +230,33 @@ def get_exercises():
     
     return redirect(url_for('index'))    
 
+@bp.route('/profile/add', methods=['GET','POST'])
+def add_profile():
+    if request.method == 'GET':
+        print('No profile exists, let\'s create one')
+        return render_template('user/create_profile.html')
+
+    if request.method == 'POST':
+        print('post request')
+        db = get_db()
+
+        firstname = request.form['firstname']
+        lastname = request.form['lastname']
+        bio = request.form['bio']
+        twitter = request.form['twitter']
+        github = request.form['github']
+        user_id = g.user['user_id']
+        
+        db.execute(
+            'INSERT INTO profile (user_id,firstname, lastname, bio, twitter, github) VALUES (?,?,?,?,?,?)',
+            (user_id, firstname, lastname, bio, twitter, github)
+        )
+        db.commit()
+
+        print(user_id, firstname, lastname, bio, twitter, github)
+
+        return redirect(url_for('user.user_profile', userid=user_id))
+
 @bp.route('/user/<username>', methods=['GET'])
 def get_userid(username):
     db = get_db()
