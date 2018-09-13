@@ -6,12 +6,13 @@
 
 {% block content %}
 {% if user.user_id == g.user['user_id'] %}
-    You are the owner of this profile.
+    <p>You are the owner of this profile.</p>
 {% endif %}
 {% if user is not none %}
 <h3> {{user.username}}'s Profile </h3>
 <section class="info">
     <h4>User Bio</h4>
+    <hr/>
     {% if user.bio %}
     <p>
         {{user.bio}}
@@ -30,7 +31,8 @@
 {% endif %}
 </section>
 {% else %}
-    This user has not created their profile yet.
+    <p>This user has not created their profile yet.</p>
+    <a href="{{url_for('index')}}">Home</a>
 {% endif %}
 
 {% endblock %}

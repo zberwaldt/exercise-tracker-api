@@ -23,6 +23,14 @@ def create_app(test_config=None):
     except OSError:
         pass
     
+    @app.errorhandler(404)
+    def not_found(e):
+        return render_template('errors/404.html')
+
+    @app.errorhandler(401)
+    def not_authorized(e):
+        return render_template('errors/401.html')
+
     @app.route('/')
     def index():
         return render_template('form_page.html')
