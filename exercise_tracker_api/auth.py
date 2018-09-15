@@ -50,6 +50,7 @@ def login():
         password = request.form['password']
         db = get_db()
         error = None
+        
         user = db.execute(
             'SELECT * FROM user WHERE username = ?', (username,)
         ).fetchone()
@@ -70,6 +71,18 @@ def login():
 
 @bp.route('/logout')
 def logout():
+    session.clear()
+    return redirect(url_for('index'))
+
+@bp.route('/delete')
+def delete_account():
+    user_id = g.user['user_id']
+    db = get_db()
+    db.execute(
+        'DELETE FROM user WHERE user_id=?',
+        (user_id,)
+    )
+    db.commit()
     session.clear()
     return redirect(url_for('index'))
 

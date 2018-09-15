@@ -24,7 +24,7 @@ def all_users():
         'SELECT username FROM user',
     ).fetchall()
 
-    return render_template('users/user_list.html', users=users)
+    return render_template('user/user_list.html', users=users)
 
 # Define a route that is responsible for handling adding users to the database.
 @bp.route('/<userid>/profile', methods=['GET', 'POST'])

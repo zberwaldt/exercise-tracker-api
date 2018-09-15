@@ -1,38 +1,46 @@
 {% extends 'base.html' %}
 
+
 {% block title %}
- {{user.username}}'s profile
+
+{% if user.username %}{{user.username}}'s{% else %} Anonymous {% endif %} profile
 {% endblock %}
 
 {% block content %}
 {% if user.user_id == g.user['user_id'] %}
     <p>You are the owner of this profile.</p>
 {% endif %}
-{% if user is not none %}
-<h3> {{user.username}}'s Profile </h3>
-<section class="info">
-    <h4>User Bio</h4>
-    <hr/>
-    {% if user.bio %}
-    <p>
-        {{user.bio}}
-    </p>
-    {% else %}
-    <p>
-        No bio
-    </p>
+    {% if user is not none %}
+    <article class="user profile">
+    <h3> {{user.username}}'s Profile </h3>
+    <section class="info">
+        <h4>User Bio</h4>
+        <hr/>
+        {% if user.bio %}
+        <p>
+            {{user.bio}}
+        </p>
+        {% else %}
+        <p>
+            No bio
+        </p>
+        {% endif %}
+    </section>
+    <section class="social">
+    {% if user.twitter %}
+    <a rel="noopenner" 
+    target="_blank" 
+    href="{{user.twitter}}">Twitter</a>
     {% endif %}
-</section>
-<section class="social">
-{% if user.twitter %}
-<a rel="noopenner" 
-   target="_blank" 
-   href="{{user.twitter}}">Twitter</a>
-{% endif %}
-</section>
-{% else %}
-    <p>This user has not created their profile yet.</p>
-    <a href="{{url_for('index')}}">Home</a>
-{% endif %}
+    </section>
+    {% else %}
+        <p>This user has not created their profile yet.</p>
+        <a href="{{url_for('index')}}">Home</a>
+    {% endif %}
+    <a id="delete" href="{{url_for('auth.delete_account')}}">Delete</a>
+    </article>
+{% endblock %}
 
+{% block scripts %}
+ <script defer src="{{ url_for('static', filename='js/profile.js') }}"></script>
 {% endblock %}
