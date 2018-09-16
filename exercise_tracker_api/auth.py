@@ -84,6 +84,7 @@ def delete_account():
     )
     db.commit()
     session.clear()
+    flash('Account Deleted')
     return redirect(url_for('index'))
 
 @bp.before_app_request

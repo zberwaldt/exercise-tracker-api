@@ -43,6 +43,16 @@ header {
     box-shadow: 0 1px 3px 2px hsla(0, 0%, 0%, .4);
 }
 
+nav {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+nav a {
+    margin: 8px;
+}
+
 footer {
     height: 125px;
     font-weight: 800;
@@ -63,6 +73,9 @@ code.instructions {
     box-shadow: 0 1px 3px 2px hsla(0, 0%, 0%, .4);
     min-width: 75%;
     margin: 16px auto;
+    position: fixed;
+    bottom: 5%;
+    animation: flashMessage 2s ease-in-out 0s 1 normal forwards;
 }
 
 .post-form {
@@ -132,4 +145,26 @@ label[for='username']::after {
     box-shadow: 0 6px 12px 2px hsla(0, 0%, 0%, .8);
     border-radius: 3px;
     border: 1px solid #dddfe2;
+}
+
+@keyframes flashMessage {
+    0% {
+        opacity:0;
+        transform: translateY(-25px);
+    }
+
+    25% {
+        opacity:1;
+        transform: translateY(0px);
+    }
+
+    75% {
+        opacity:1;
+        transform: translateY(0px);
+    }
+
+    100% {
+        opacity:0;
+        transform: translateY(25px);
+    }
 }
