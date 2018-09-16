@@ -60,7 +60,7 @@ def user_exercises(userid):
     db = get_db()
 
     exercises = db.execute(
-        'SELECT * FROM exercise e JOIN user u ON e.user_id = u.user_id WHERE e.user_id = ?',
+        'SELECT * FROM exercise e JOIN user u ON e.user_id = u.user_id WHERE e.user_id = ? LIMIT 10',
         (userid,)
     ).fetchall()
 

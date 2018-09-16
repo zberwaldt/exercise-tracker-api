@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form id="exercise-form" 
+      class="post-form" 
+      action="{{url_for('api.add_exercises')}}" 
+      autocomplete="off" 
+      method="POST">
+    <h2>Log an exercise</h2>
+    <label for="details">
+        <input type="text" 
+               id="details" 
+               name="details" 
+               required
+               pattern="\w+" />
+    </label>
+    <label for="duration">
+        <input type="number" 
+               id="duration" 
+               name="duration" 
+               required
+               pattern="\d+" />
+    </label>
+    <label>
+        <input type="date"
+               id="date"
+               name="date"
+               required />
+    </label>
+    <input type="submit" />
+</form>
+
+{% endblock %}

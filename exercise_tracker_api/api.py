@@ -78,60 +78,64 @@ def add_user():
     # redirect to the index, I probably want to address this.
     return redirect(url_for('index'))
 
-@bp.route('/exercise/add', methods=['POST'])
+@bp.route('/exercise/add', methods=['GET', 'POST'])
 def add_exercises():
     # Get database so you can query it!
-    db = get_db()
+    if request.method == 'GET':
+        return render_template('api/add_exercise.html')
+    else: 
+        db = get_db()
 
-    user_id = request.form['user-id']
-    details = request.form['details']
-    duration = request.form['duration']
-    date = request.form['date']
+        user_id = g.user['user_id']
+        details = request.form['details']
+        duration = request.form['duration']
+        date = request.form['date']
 
-    errors = []
-    exercise = {}
+        errors = []
+        exercise = {}
 
-    # First check if ID is empty
-    if user_id == '':
-        # add relevant error
-        errors.append("Id cannot be empty")
-    # Now check to make sure the provided ID is present in the table
-    elif db.execute(
-        'SELECT id FROM user WHERE user_id = ?',
-        (user_id,)
-        ).fetchone() is None:
-        errors.append("You did not enter a valid ID")
-    else:
-        exercise['user_id'] = user_id
+        # First check if ID is empty
+        if user_id == '':
+            # add relevant error
+            errors.append("Id cannot be empty")
+        # Now check to make sure the provided ID is present in the table
+        elif db.execute(
+            'SELECT id FROM user WHERE user_id = ?',
+            (user_id,)
+            ).fetchone() is None:
+            errors.append("You did not enter a valid ID")
+        else:
+            exercise['user_id'] = user_id
 
-    if details == '':
-        errors.append("no details provided")
-    else:
-        exercise['details'] = details
-    if duration == '':
-        errors.append("no duration provided")
-    elif None:
-        pass
-    else:
-        exercise['duration'] = int(duration)
-    if date == '':
-        errors.append("no date provided")
-    else:
-        exercise['date'] = date
+        if details == '':
+            errors.append("no details provided")
+        else:
+            exercise['details'] = details
+        if duration == '':
+            errors.append("no duration provided")
+        elif None:
+            pass
+        else:
+            exercise['duration'] = int(duration)
+        if date == '':
+            errors.append("no date provided")
+        else:
+            exercise['date'] = date
 
-    # If there IS NOT errors AND there IS an exercise
-    if not errors and exercise:
-        db.cursor().execute(
-            'INSERT INTO exercise (user_id, details, duration, date_of) VALUES (?, ?, ?, date(?))',
-            (user_id, details, duration, date)
-        )
-        db.commit()
-        # return the json data of your new exercise
-        return jsonify(exercise)
-    else:
-        for error in errors:
-            flash(error)
-        return redirect(url_for('index'))
+        # If there IS NOT errors AND there IS an exercise
+        if not errors and exercise:
+            db.cursor().execute(
+                'INSERT INTO exercise (user_id, details, duration, date_of) VALUES (?, ?, ?, date(?))',
+                (user_id, details, duration, date)
+            )
+            db.commit()
+            # return the json data of your new exercise
+            return redirect(url_for('user.user_exercises', userid=g.user['user_id']))
+            
+        else:
+            for error in errors:
+                flash(error)
+            return redirect(url_for('index'))
 
 @bp.route('/exercise/log', methods=['GET'])
 def get_exercises():
