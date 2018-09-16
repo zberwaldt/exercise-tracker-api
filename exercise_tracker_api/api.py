@@ -137,6 +137,19 @@ def add_exercises():
                 flash(error)
             return redirect(url_for('index'))
 
+@bp.route('/exercise/<exerciseid>/delete', methods=['GET'])
+@login_required
+def delete_exercise(exerciseid):
+    db = get_db()
+    userid = g.user['user_id']
+    db.execute(
+        'DELETE FROM exercise WHERE id=?',
+        (exerciseid,)
+    )
+    db.commit()
+    flash('Exercise Deleted')
+    return redirect(url_for('user.user_exercises', userid=userid))
+
 @bp.route('/exercise/log', methods=['GET'])
 def get_exercises():
     # Get database so you can query it!

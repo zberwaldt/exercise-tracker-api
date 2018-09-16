@@ -2,19 +2,44 @@
  
 {% block content %}
 
-<h2>{{g.user['username']}}</h2>
-<section>
+<h2>{{g.user['username']}}'s Workout Log</h2>
+<section class="exercise-list">
 {% if exercises %}
-{% for exercise in exercises %}
-<div class="exercise">
-    <h3>{{exercise.details}}</h3>
-    <p>{{exercise.duration}}</p>
-    <p>{{exercise.date_of}}</p>
-</div>
-{% endfor %}
+<table>
+    <thead>
+        <tr>
+            <th colspan="6">Exercises</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td scope="col">ID</td>
+            <td scope="col">Details</td>
+            <td scope="col">Duration</td>
+            <td scope="col">Date</td>
+            <td scope="col">Edit</td>
+            <td scope="col">Delete</td>
+        </tr>
+        {% for exercise in exercises %}
+        <tr class="exercise">
+            <td>{{exercise.id}}</td>
+            <td>{{exercise.details}}</td>
+            <td>{{exercise.duration}}</td>
+            <td>{{exercise.date_of}}</td>
+            <td>
+                <a href="{{url_for('index')}}">Edit</a>
+            </td>
+            <td>
+                <a href="{{url_for('api.delete_exercise', exerciseid=exercise.id )}}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% else %}
     <p>No exercises logged yet.</p>
 {% endif %}
+
 <a href="{{url_for('api.add_exercises')}}">Add Exercise</a>
 </section>
 {% endblock %}
