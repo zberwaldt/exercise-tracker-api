@@ -147,6 +147,17 @@ label[for='username']::after {
     border: 1px solid #dddfe2;
 }
 
+.confirm {
+    width: 100px;
+    height: 100px;
+    background: orange;
+    padding: 24px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 @keyframes flashMessage {
     0% {
         opacity:0;

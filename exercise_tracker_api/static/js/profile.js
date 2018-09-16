@@ -1,15 +1,20 @@
 (function() {
     window.addEventListener('load', (e) => {
 
-        const deleteBtn = document.querySelector('#delete');
-        deleteBtn.addEventListener('click', confirmAction(function(e) {
-            console.log("You did do it.");
-            return;
-        }, function(e) {
-            console.log("You didn't do it.");
+        const deleteForm = document.querySelector('#delete-account');
+        deleteForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            return;
-        }));
+            confirmAction(function(e) {
+                console.log("You did do it.");
+                document.querySelector('.confirm').remove();
+                deleteForm.submit();
+                return true;
+            }, function(e) {
+                console.log("You didn't do it.");
+                document.querySelector('.confirm').remove();
+                return false;
+            });
+        });
 
     });
 
@@ -35,8 +40,7 @@
 
 
         div.classList.add('confirm');
-        div.appendChild(h4);
-    
+        
         fragment.appendChild(div);
         
         document.querySelector('main').appendChild(fragment);

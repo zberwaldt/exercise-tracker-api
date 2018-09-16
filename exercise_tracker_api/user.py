@@ -21,7 +21,7 @@ def all_users():
     db = get_db()
 
     users = db.execute(
-        'SELECT username FROM user',
+        'SELECT username, user_id FROM user',
     ).fetchall()
 
     return render_template('user/user_list.html', users=users)
@@ -42,6 +42,8 @@ def user_profile(userid):
 
 
     if user is not None:
+        return render_template('user/profile.html', user=user)
+    elif not g.user:
         return render_template('user/profile.html', user=user)
     elif g.user['user_id'] != userid:
         return render_template('user/profile.html', user=user)
