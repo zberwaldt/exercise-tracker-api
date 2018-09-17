@@ -1,26 +1,23 @@
 (function() {
     window.addEventListener('load', (e) => {
-        let data = retrieveExercises();
-        console.log(data);
-        const deleteForm = document.querySelector('#delete-account');
-        deleteForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            confirmAction(function(e) {
-                console.log("You did do it.");
-                document.querySelector('.confirm').remove();
-                deleteForm.submit();
-                return true;
-            }, function(e) {
-                console.log("You didn't do it.");
-                document.querySelector('.confirm').remove();
-                return false;
-            });
+        let id = document.querySelector('.exercise-list').dataset.id;
+        let exerciseData = retrieveExercises(id);
+        renderTableRows(exerciseData);
+        let exerciseRows = document.querySelectorAll('.exercise');
+
+        if(exerciseRows.length < 1) {
+          
+        } 
+
+        let deleteButtons = document.querySelectorAll('.delete');
+        deleteButtons.forEach(x => {
+            x.addEventListener('click', deleteExercise);
         });
 
     });
 
-    function retrieveExercises() {
-        return fetch('/api/exercise/log', {
+    function retrieveExercises(id) {
+        return fetch(`/api/exercise/log?user_id=${id}`, {
             method: 'GET',
             mode: 'same-origin',
             cache: "no-cache",
@@ -35,8 +32,25 @@
         });
     }
 
-    function deleteExercise(exerciseId) {
-        
+
+    function deleteExercise() {
+        let exerciseId = this.dataset.id;
+        deleteTableRow(exerciseId);
+        return fetch(`/api/exercise/${exerciseId}/delete`, {
+            method: 'POST',
+            mode: 'same-origin',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+        }).catch(err => console.log(err));
+    }
+
+    function renderTableRows(data) {
+
+    }
+
+    function deleteTableRow(id) {
+        let row = document.querySelector(`#exercise-${id}`);
+        row.remove();
     }
 
     function confirmAction(yesCallback, noCallback) {

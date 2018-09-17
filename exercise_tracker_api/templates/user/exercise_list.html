@@ -3,8 +3,8 @@
 {% block content %}
 
 <h2>{{g.user['username']}}'s Workout Log</h2>
-<section class="exercise-list">
-{% if exercises %}
+<section class="exercise-list" data-id="{{ data.userid }}">
+
 <table>
     <thead>
         <tr>
@@ -17,29 +17,42 @@
             <td scope="col">Details</td>
             <td scope="col">Duration</td>
             <td scope="col">Date</td>
+            {% if data.userid == g.user['user_id'] %}
             <td scope="col">Edit</td>
             <td scope="col">Delete</td>
+            {% endif %}
         </tr>
-        {% for exercise in exercises %}
-        <tr class="exercise">
-            <td>{{exercise.id}}</td>
-            <td>{{exercise.details}}</td>
-            <td>{{exercise.duration}}</td>
-            <td>{{exercise.date_of}}</td>
-            <td>
-                <a href="{{url_for('index')}}">Edit</a>
-            </td>
-            <td>
-                <a href="{{url_for('api.delete_exercise', exerciseid=exercise.id )}}">Delete</a>
-            </td>
-        </tr>
-        {% endfor %}
+        {% if exercises %}
+            {% for exercise in exercises %}
+            <tr class="exercise" id="exercise-{{exercise.id}}">
+                <td>{{exercise.id}}</td>
+                <td>{{exercise.details}}</td>
+                <td>{{exercise.duration}}</td>
+                <td>{{exercise.date_of}}</td>
+                {% if exercise.user_id == g.user['user_id'] %}
+                <td>
+                    <a href="{{url_for('api.edit_exercise', exerciseid=exercise.id )}}">Edit</a>
+                </td>
+                <td>
+                    <button class="delete" id="delete-{{exercise.id}}" data-id="{{exercise.id}}">Delete</button>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        {% else %}
+            <tr class="exercise">
+                <td colspan="6">No exercises logged yet.</td>
+            </tr>
+        {% endif %}
     </tbody>
 </table>
-{% else %}
-    <p>No exercises logged yet.</p>
-{% endif %}
+
 
 <a href="{{url_for('api.add_exercises')}}">Add Exercise</a>
 </section>
+{% endblock %}
+
+
+{% block scripts %}
+<script defer src="{{ url_for('static', filename='js/exerciseList.js') }}"></script>
 {% endblock %}

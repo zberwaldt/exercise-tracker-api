@@ -64,4 +64,4 @@ def user_exercises(userid):
         (userid,)
     ).fetchall()
 
-    return render_template('user/exercise_list.html', exercises=exercises)
+    return render_template('user/exercise_list.html', exercises=exercises, data={"userid": userid})

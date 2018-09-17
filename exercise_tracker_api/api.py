@@ -3,7 +3,7 @@ import datetime
 import uuid
 
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for, jsonify
+    Blueprint, flash, g, redirect, render_template, request, session, url_for, jsonify, Response
 )
 
 # import login required decorator
@@ -137,7 +137,7 @@ def add_exercises():
                 flash(error)
             return redirect(url_for('index'))
 
-@bp.route('/exercise/<exerciseid>/delete', methods=['GET'])
+@bp.route('/exercise/<exerciseid>/delete', methods=['POST'])
 @login_required
 def delete_exercise(exerciseid):
     db = get_db()
@@ -148,9 +148,23 @@ def delete_exercise(exerciseid):
     )
     db.commit()
     flash('Exercise Deleted')
-    return redirect(url_for('user.user_exercises', userid=userid))
+    return Response(status=200)
+
+@bp.route('/exercise/<exerciseid>/edit', methods=('GET', 'POST'))
+@login_required
+def edit_exercise(exerciseid):
+    db = get_db()
+    userid = g.user['user_id']
+
+    exercise_to_edit = db.execute(
+        'SELECT * FROM exercise WHERE id=? AND user_id=?',
+        (exerciseid, userid)
+    ).fetchone()
+
+    return "Edit exercise."
 
 @bp.route('/exercise/log', methods=['GET'])
+@login_required
 def get_exercises():
     # Get database so you can query it!
     db = get_db()
