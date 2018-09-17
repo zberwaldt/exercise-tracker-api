@@ -38,19 +38,38 @@ header, footer {
 }
 
 header {
+    position: relative;
     padding: 16px;
     flex-direction: column;
-    box-shadow: 0 1px 3px 2px hsla(0, 0%, 0%, .4);
+    z-index: 500;
 }
 
 nav {
+    position: relative;
     width: 100%;
     display: flex;
+    background-color: rgb(70, 81, 79);
     justify-content: center;
+    box-shadow: 0 1px 3px 2px hsla(0, 0%, 0%, .4);
+    z-index: 100;
 }
 
 nav a {
-    margin: 8px;
+    margin:0 1px;
+    color:white;
+    width: 100px;
+    text-align:center;
+    padding: 8px;
+    background-color: rgb(80, 91, 89);
+}
+
+nav a:hover {
+    background-color: rgb(100, 110, 100);
+    font-weight: 600;
+}
+
+nav a:active {
+    color: grey;
 }
 
 footer {
@@ -193,7 +212,10 @@ td {
     text-align: center;
 }
 
-
+#exerciseLogTitle {
+    margin: 32px 0px;
+    text-align:center;
+}
 
 @keyframes flashMessage {
     0% {
