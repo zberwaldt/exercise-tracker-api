@@ -1,3 +1,3 @@
-INSERT INTO user (username, user_id) VALUES ('carl', '01100000'), ('phil', '246c0023');
+INSERT INTO user (username, user_id, password) VALUES ('carl', '01100000', 'abc'), ('phil', '246c0023', '1232');
 
 INSERT INTO exercise (user_id, details, duration, date_of) VALUES ('00000000', 'running', 32, '2018-09-02'), ('00000000', 'shadow-boxing', 15, '2018-06-15'), ('0abc0023', 'kicking ass', 15, '2000-01-01'), ('0abc0023', 'kicking ass', 15, '2000-01-02'), ('0abc0023', 'kicking ass', 15, '2000-01-03'), ('0abc0023', 'kicking ass', 15, '2000-02-04');
