@@ -30,7 +30,7 @@ def test_register_validate_input(client, username, password, message):
 def test_login(client, auth):
     assert client.get('/auth/login').status_code == 200
     response = auth.login()
-    # assert response.headers['Location'] == 'http://localhost/'
+    assert response.headers['Location'] == 'http://localhost:5000/'
 
     with client:
         client.get('/')
