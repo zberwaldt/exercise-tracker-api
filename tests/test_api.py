@@ -14,14 +14,23 @@ def test_validate_fail():
 
 def test_new_user(client):
     rv = client.post('/api/exercise/new-user', data={
-        'username': 'zach',
+        "username": "zach",
     })
+    print(rv.data)
     assert 'zach' in rv.data
+
+    rv = client.post('/api/exercise/new-user', data={
+        'username': None,
+    })
+
+    assert 'Please provide a username!' in rv.data
+
+    rv = client.post('/api/exercise/new-user', data= {
+        'username': None
+    })
+
+    assert "Please provide a username!" in rv.data
         
 def test_exercise_add_get(client):
     rv = client.get('/api/exericse/add', follow_redirects=True)
-    assert r'Log an excercise' in rv.data
-
-def test_user_exercise_delete(client):
-    rv = client.post('/api/exercise/1/delete')
-    assert 200 in rv.status_code
+    assert b'Log an excercise' in rv.data
