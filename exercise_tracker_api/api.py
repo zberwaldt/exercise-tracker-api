@@ -239,21 +239,21 @@ def get_exercises():
             query_params
         ).fetchall()
 
-    if user_exercises:
-        exercise_data = []
+        if user_exercises:
+            exercise_data = []
 
-        for exercise in user_exercises:
-            newEntry = {
-                'username': exercise['username'],
-                'details': exercise['details'],
-                'duration': exercise['duration'],
-                'date': exercise['date_of'],
-            }
-            exercise_data.append(newEntry)
-        
-        return jsonify(exercise_data)
-    else:
-        flash("No entries found!")
+            for exercise in user_exercises:
+                newEntry = {
+                    'username': exercise['username'],
+                    'details': exercise['details'],
+                    'duration': exercise['duration'],
+                    'date': exercise['date_of'],
+                }
+                exercise_data.append(newEntry)
+            
+            return jsonify(exercise_data)
+        else:
+            flash("No entries found!")
     
     return redirect(url_for('index'))    
 

@@ -38,10 +38,8 @@ def user_profile(userid):
     ).fetchone()
 
     print(user)
-    
 
-
-    if user is not None and not g.user and g.user['user_id'] != userid:
+    if user is not None or not g.user or g.user['user_id'] != userid:
         return render_template('user/profile.html', user=user)
     else:
         return redirect(url_for('api.add_profile'))
