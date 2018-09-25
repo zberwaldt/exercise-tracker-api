@@ -37,7 +37,7 @@ def user_profile(userid):
         (userid,)
     ).fetchone()
 
-    print(user)
+    
 
     if user is not None or not g.user or g.user['user_id'] != userid:
         return render_template('user/profile.html', user=user)
@@ -54,8 +54,14 @@ def user_exercises(userid):
     db = get_db()
 
     exercises = db.execute(
-        'SELECT * FROM exercise e JOIN user u ON e.user_id = u.user_id WHERE e.user_id = ? LIMIT 10',
+        'SELECT * FROM user u JOIN exercise e ON u.user_id = e.user_id WHERE u.user_id = ? LIMIT 10',
         (userid,)
     ).fetchall()
+
+    if len(exercises) == 0:
+        exercises = db.execute(
+            'SELECT username FROM user WHERE user_id = ?',
+            (userid,)
+        ).fetchone()
 
     return render_template('user/exercise_list.html', exercises=exercises, data={"userid": userid})

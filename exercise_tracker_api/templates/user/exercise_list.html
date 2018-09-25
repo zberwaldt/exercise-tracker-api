@@ -2,7 +2,11 @@
  
 {% block content %}
 
-<h2 id="exerciseLogTitle">{{exercises[0].username}}'s Workouts</h2>
+{% if exercises|length > 1%}
+    <h2 id="exerciseLogTitle">{{exercises[0].username}}'s Workouts</h2>
+{% else %}
+    <h2 id="exerciseLogTitle">{{exercises.username}}'s Workouts</h2>
+{% endif %}
 <section class="exercise-list" data-id="{{ data.userid }}">
 
 <table>
@@ -22,7 +26,7 @@
             <td scope="col">Delete</td>
             {% endif %}
         </tr>
-        {% if exercises %}
+        {% if exercises|length > 1%}
             {% for exercise in exercises %}
             <tr class="exercise" id="exercise-{{exercise.id}}">
                 <td>{{exercise.id}}</td>

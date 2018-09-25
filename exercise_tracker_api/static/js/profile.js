@@ -35,8 +35,19 @@
         });
     }
 
-    function deleteExercise(exerciseId) {
-        
+    function deleteExercise(e) {
+        let id = e.target.dataset.id;
+        console.log(id);
+        // return fetch(`/api/${exerciseId}/delete`, {
+        //     method: 'POST',
+        //     mode: 'same-origin',
+        //     cache: 'no-cache',
+        //     credentials: 'same-origin',
+        // }).then(res => {
+        //     return res.json();
+        // }).catch(err => {
+        //     console.log(err);
+        // });
     }
 
     function confirmAction(yesCallback, noCallback) {
