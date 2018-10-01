@@ -35,8 +35,12 @@ def user_profile(userid):
     # get the database
     db = get_db()
     
+    # user = db.execute(
+    #     'SELECT * FROM profile p JOIN user u ON  p.user_id = u.user_id WHERE p.user_id=?',
+    #     (userid,)
+    # ).fetchone()
     user = db.execute(
-        'SELECT * FROM profile p JOIN user u ON  p.user_id = u.user_id WHERE p.user_id=?',
+        'SELECT * FROM user WHERE user_id=?',
         (userid,)
     ).fetchone()
 

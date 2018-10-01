@@ -25,6 +25,7 @@ body {
 main {
     flex-grow: 2;
     max-width: 1024px;
+    width: 85%;
     margin: 0 auto;
     padding: 0 16px;
 }
