@@ -16,28 +16,45 @@
     <section class="info">
         <h4>User Bio</h4>
         <hr/>
-        {% if user.bio %}
-        <p>
-            {{user.bio}}
-        </p>
+        {% if user.firstname and user.lastname %}
+            Hello, {{ firstname }} {{ lastname }}
+        {% endif %}
+        {% if not user.bio %}
+            <p>
+                {{user.bio}}
+            </p>    
         {% else %}
-        <p>
-            No bio
-        </p>
+            <p>
+                No bio
+            </p>
         {% endif %}
     </section>
     <section class="social">
-    {% if user.twitter %}
-    <a rel="noopenner" 
-    target="_blank" 
-    href="{{user.twitter}}">Twitter</a>
-    {% endif %}
+        <h4>User Social</h4>
+        <hr />
+        <span>Twitter:</span>
+        {% if user.twitter %}
+        <a rel="noopenner" 
+        target="_blank" 
+        href="{{user.twitter}}">Twitter</a>
+        {% else %}
+        No twitter
+        {% endif %}
+        <span>Github:</span>
+        {% if user.github %}
+        <a rel="noopenner" target="_blank" href="{{user.github}}">Github</a>
+        {% else %}
+        No github
+        {% endif %}
     </section>
     {% else %}
         <p>This user has not created their profile yet.</p>
         <a href="{{url_for('index')}}">Home</a>
     {% endif %}
     {% if user.user_id == g.user['user_id'] and g.user %}
+    <form id="edit-profile" action="{{ url_for('api.add_profile', user=user)}}">
+        <input type="submit" value="Edit Profile"/>
+    </form>
     <form id="delete-account" action="{{ url_for('auth.delete_account')}}">
         <input type="submit" value="Delete Account"/>
     </form>

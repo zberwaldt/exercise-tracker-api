@@ -298,6 +298,7 @@ def get_userid(username):
 
 
 @bp.route('/users', methods=['GET'])
+@login_required
 def get_users():
     db = get_db()
 

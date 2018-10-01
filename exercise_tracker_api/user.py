@@ -16,6 +16,7 @@ from exercise_tracker_api.db import get_db
 bp = Blueprint('user', __name__, url_prefix='/user')
 
 @bp.route('/', methods=['GET'])
+@login_required
 def all_users():
 
     db = get_db()
@@ -28,7 +29,9 @@ def all_users():
 
 # Define a route that is responsible for handling adding users to the database.
 @bp.route('/<userid>/profile', methods=['GET', 'POST'])
+@login_required
 def user_profile(userid):
+
     # get the database
     db = get_db()
     
@@ -37,8 +40,8 @@ def user_profile(userid):
         (userid,)
     ).fetchone()
 
-    
-
+    if user is None:
+        return render_template('errors/404.html'), 404
     if user is not None or not g.user or g.user['user_id'] != userid:
         return render_template('user/profile.html', user=user)
     else:
@@ -50,6 +53,7 @@ def user_profile(userid):
 @bp.route('/<userid>/exercises', methods=['GET'])
 @login_required
 def user_exercises(userid):
+    
     # get the database
     db = get_db()
 
@@ -57,11 +61,14 @@ def user_exercises(userid):
         'SELECT * FROM user u JOIN exercise e ON u.user_id = e.user_id WHERE u.user_id = ? LIMIT 10',
         (userid,)
     ).fetchall()
-
+    
     if len(exercises) == 0:
         exercises = db.execute(
             'SELECT username FROM user WHERE user_id = ?',
             (userid,)
         ).fetchone()
+        print(exercises)
+        if exercises is None:
+            return render_template("errors/404.html"), 404
 
     return render_template('user/exercise_list.html', exercises=exercises, data={"userid": userid})
