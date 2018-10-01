@@ -13,12 +13,19 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
-    user_id = str(uuid.uuid4())[:8]
+    userid = str(uuid.uuid4())[:8]
 
     if request.method == 'POST':
+        
         username = request.form['username']
         password = request.form['password']
+        bio = request.form['bio']
+        twitter = request.form['twitter']
+        facebook = request.form['facebook']
+        instagram = request.form['instagram']
+
         db = get_db()
+
         error = None
 
         if not username:
@@ -30,11 +37,38 @@ def register():
             (username,)
         ).fetchone() is not None:
             error = f'User {username} is already registered.'
-
+        
         if error is None:
+    
+            dbquery = 'INSERT INTO user (username, password, userid '
+            dbparams = [username, generate_password_hash(password), userid]
+            values = 'VALUES (?, ?, ?'
+            if bio:
+                dbquery += ", bio"
+                values += ", ?"
+                dbparams.append(bio)
+            if twitter:
+                dbquery += ", twitter"
+                values += ", ?"
+                dbparams.append(twitter)
+            if facebook:
+                dbquery += ", facebook"
+                values += ", ?"
+                dbparams.append(facebook)
+            if instagram:
+                dbquery += ", instagram"
+                values += ", ?"
+                dbparams.append(instagram)
+            
+            dbquery += ")"
+            
+            values += ")"
+            
+            dbquery += values
+
             db.execute(
-                'INSERT INTO user (username, password, user_id) VALUES (?, ?, ?)',
-                (username, generate_password_hash(password), user_id)
+                dbquery,
+                dbparams
             )
             db.commit()
             return redirect(url_for('auth.login'))
@@ -62,7 +96,7 @@ def login():
         
         if error is None:
             session.clear()
-            session['user_id'] = user['user_id']
+            session['userid'] = user['userid']
             return redirect(url_for('index'))
 
         flash(error)
@@ -76,11 +110,11 @@ def logout():
 
 @bp.route('/delete')
 def delete_account():
-    user_id = g.user['user_id']
+    userid = g.user['userid']
     db = get_db()
     db.execute(
-        'DELETE FROM user WHERE user_id=?',
-        (user_id,)
+        'DELETE FROM user WHERE userid=?',
+        (userid,)
     )
     db.commit()
     session.clear()
@@ -89,13 +123,13 @@ def delete_account():
 
 @bp.before_app_request
 def load_logged_in_user():
-    user_id = session.get('user_id')
+    userid = session.get('userid')
 
-    if user_id is None:
+    if userid is None:
         g.user = None
     else:
         g.user = get_db().execute(
-            'SELECT * FROM user WHERE user_id = ?', (user_id,)
+            'SELECT * FROM user WHERE userid = ?', (userid,)
         ).fetchone()
 
 

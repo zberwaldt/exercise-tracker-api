@@ -22,7 +22,7 @@ def all_users():
     db = get_db()
 
     users = db.execute(
-        'SELECT username, user_id FROM user',
+        'SELECT username, userid FROM user',
     ).fetchall()
 
     return render_template('user/user_list.html', users=users)
@@ -36,17 +36,17 @@ def user_profile(userid):
     db = get_db()
     
     # user = db.execute(
-    #     'SELECT * FROM profile p JOIN user u ON  p.user_id = u.user_id WHERE p.user_id=?',
+    #     'SELECT * FROM profile p JOIN user u ON  p.userid = u.userid WHERE p.userid=?',
     #     (userid,)
     # ).fetchone()
     user = db.execute(
-        'SELECT * FROM user WHERE user_id=?',
+        'SELECT * FROM user WHERE userid=?',
         (userid,)
     ).fetchone()
 
     if user is None:
         return render_template('errors/404.html'), 404
-    if user is not None or not g.user or g.user['user_id'] != userid:
+    if user is not None or not g.user or g.user['userid'] != userid:
         return render_template('user/profile.html', user=user)
     else:
         return redirect(url_for('api.add_profile'))
@@ -62,13 +62,13 @@ def user_exercises(userid):
     db = get_db()
 
     exercises = db.execute(
-        'SELECT * FROM user u JOIN exercise e ON u.user_id = e.user_id WHERE u.user_id = ? LIMIT 10',
+        'SELECT * FROM user u JOIN exercise e ON u.userid = e.userid WHERE u.userid = ? LIMIT 10',
         (userid,)
     ).fetchall()
     
     if len(exercises) == 0:
         exercises = db.execute(
-            'SELECT username FROM user WHERE user_id = ?',
+            'SELECT username FROM user WHERE userid = ?',
             (userid,)
         ).fetchone()
         print(exercises)

@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content %}
-{% if user.user_id == g.user['user_id'] and g.user %}
+{% if user.userid == g.user['userid'] and g.user %}
     <p>You are the owner of this profile.</p>
 {% endif %}
     {% if user is not none %}
@@ -48,7 +48,7 @@
                     <td scope="col">Details</td>
                     <td scope="col">Duration</td>
                     <td scope="col">Date</td>
-                    {% if user.userid == g.user['user_id'] %}
+                    {% if user.userid == g.user['userid'] %}
                     <td scope="col">Edit</td>
                     <td scope="col">Delete</td>
                     {% endif %}
@@ -59,7 +59,7 @@
             </tbody>
         </table>
         
-    {% if user.userid == g.user['user_id'] %}
+    {% if user.userid == g.user['userid'] %}
         <a href="{{url_for('api.add_exercises')}}">Add Exercise</a>
     {% endif %}
     </section>
@@ -67,7 +67,7 @@
         <p>This user has not created their profile yet.</p>
         <a href="{{url_for('index')}}">Home</a>
     {% endif %}
-    {% if user.user_id == g.user['user_id'] and g.user %}
+    {% if user.userid == g.user['userid'] and g.user %}
     <form id="delete-account" action="{{ url_for('auth.delete_account')}}">
         <input type="submit" value="Delete Account"/>
     </form>
