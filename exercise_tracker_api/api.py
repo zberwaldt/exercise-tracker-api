@@ -18,7 +18,7 @@ bp = Blueprint('api', __name__, url_prefix='/api')
 # Define a route that is responsible for handling adding users to the database.
 @bp.route('/exercise/new-user', methods=['POST'])
 def add_user():
-    
+    """ DEPERCATED! this is part of the original site. It will be removed shortly. Originally you would make a request to log a new user to the database. """
     username = request.form['username']
     
     # Generate a special ID per user, from a uuid take only first 8 characters 
@@ -73,6 +73,9 @@ def add_user():
 
 @bp.route('/exercise/add', methods=['GET', 'POST'])
 def add_exercises():
+    
+    """ /exercise/add is for using AJAX to add new exercises, instead of contantly redirecting to different pages. Will refactor to make it more secure. And only available to the current user. """
+    
     # Get database so you can query it!
     if request.method == 'GET':
         return render_template('api/add_exercise.html')
@@ -133,6 +136,10 @@ def add_exercises():
 @bp.route('/exercise/<exerciseid>/delete', methods=['POST'])
 @login_required
 def delete_exercise(exerciseid):
+
+    """ Simple ajax route for deleting a exercise from the database for a user """
+
+
     db = get_db()
     userid = g.user['user_id']
     db.execute(
@@ -146,6 +153,9 @@ def delete_exercise(exerciseid):
 @bp.route('/exercise/<exerciseid>/edit', methods=('GET', 'POST'))
 @login_required
 def edit_exercise(exerciseid):
+
+    """ Simple route for editing a given exercise record. """
+
     db = get_db()
     userid = g.user['user_id']
 
@@ -159,6 +169,9 @@ def edit_exercise(exerciseid):
 @bp.route('/exercise/log', methods=['GET'])
 @login_required
 def get_exercises():
+
+    """ DEPRECATED! This route will be removed in favour of consolidating the exercise log into the user profile. """
+
     # Get database so you can query it!
     db = get_db()
         
@@ -259,6 +272,9 @@ def get_exercises():
 
 @bp.route('/profile/add', methods=['GET','POST'])
 def add_profile():
+
+    """ DEPRECATED! This route will be removed in favour of consolidating profile creation to the register page. Currently is a dedicated route for creating a profile and adding it to the database for the current user. """
+
     if request.method == 'GET':
         print('No profile exists, let\'s create one')
         return render_template('user/create_profile.html')
@@ -300,6 +316,9 @@ def get_userid(username):
 @bp.route('/users', methods=['GET'])
 @login_required
 def get_users():
+
+    """ Builds a list for all registered users on the site, so you can view their profiles and exercise logs. Currently under review. """
+
     db = get_db()
 
     users = db.execute("SELECT * FROM user").fetchall()
@@ -312,10 +331,12 @@ def get_users():
     return jsonify(all_users)
 
     
-# create a validate function that makes sure a date is a valid date. 
-# It only returns false. if the Try is successful it doesn't return anything
-# So that's something I want to address.
 def validate(date_text):
+    """
+    A validate function that makes sure a date is a valid date.
+    Only returns false, will return to make more complete.
+    """
+
     try: 
         datetime.datetime.strptime(date_text, '%Y-%m-%d')
     except ValueError:
