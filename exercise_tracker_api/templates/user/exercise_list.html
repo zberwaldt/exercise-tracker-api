@@ -51,8 +51,9 @@
     </tbody>
 </table>
 
-
-<a href="{{url_for('api.add_exercises')}}">Add Exercise</a>
+{% if data.userid == g.user['user_id'] %}
+    <a href="{{url_for('api.add_exercises')}}">Add Exercise</a>
+{% endif %}
 </section>
 {% endblock %}
 
