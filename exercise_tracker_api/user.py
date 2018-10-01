@@ -57,11 +57,14 @@ def user_exercises(userid):
         'SELECT * FROM user u JOIN exercise e ON u.user_id = e.user_id WHERE u.user_id = ? LIMIT 10',
         (userid,)
     ).fetchall()
-
+    
     if len(exercises) == 0:
         exercises = db.execute(
             'SELECT username FROM user WHERE user_id = ?',
             (userid,)
         ).fetchone()
+        print(exercises)
+        if exercises is None:
+            return render_template("errors/404.html"), 404
 
     return render_template('user/exercise_list.html', exercises=exercises, data={"userid": userid})
