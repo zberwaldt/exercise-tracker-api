@@ -16,8 +16,8 @@
     </header>
     <nav>
         <a href="{{ url_for('index') }}">Home</a>
-        <a href="{{ url_for('user.all_users') }}">User List</a>
         {% if g.user %}
+            <a href="{{ url_for('user.all_users') }}">User List</a>
             <a href="{{ url_for('user.user_profile', userid=g.user['user_id'])}}">Profile</span></li>
             <a href="{{ url_for('user.user_exercises', userid=g.user['user_id']) }}">Exercise List</a></li>
             <a href="{{ url_for('auth.logout') }}">Log Out</a>
