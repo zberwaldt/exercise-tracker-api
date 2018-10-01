@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template
+from flask import Flask, render_template, g, redirect, url_for
 
 def create_app(test_config=None):
     # create and configure app
@@ -33,7 +33,11 @@ def create_app(test_config=None):
 
     @app.route('/')
     def index():
-        return render_template('form_page.html')
+        if g.user:
+            return redirect(url_for('user.user_profile', userid=g.user['user_id']))
+        else:
+            return redirect(url_for('auth.login'))
+            
 
     from . import db
     db.init_app(app)
