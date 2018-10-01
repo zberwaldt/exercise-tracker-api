@@ -27,7 +27,7 @@ def add_exercises():
     else: 
         db = get_db()
 
-        user_id = g.user['user_id']
+        userid = g.user['userid']
         details = request.form['details']
         duration = request.form['duration']
         date = request.form['date']
@@ -36,17 +36,17 @@ def add_exercises():
         exercise = {}
 
         # First check if ID is empty
-        if user_id == '':
+        if userid == '':
             # add relevant error
             errors.append("Id cannot be empty")
         # Now check to make sure the provided ID is present in the table
         elif db.execute(
-            'SELECT id FROM user WHERE user_id = ?',
-            (user_id,)
+            'SELECT id FROM user WHERE userid = ?',
+            (userid,)
             ).fetchone() is None:
             errors.append("You did not enter a valid ID")
         else:
-            exercise['user_id'] = user_id
+            exercise['userid'] = userid
 
         if details == '':
             errors.append("no details provided")
@@ -66,12 +66,12 @@ def add_exercises():
         # If there IS NOT errors AND there IS an exercise
         if not errors and exercise:
             db.cursor().execute(
-                'INSERT INTO exercise (user_id, details, duration, date_of) VALUES (?, ?, ?, date(?))',
-                (user_id, details, duration, date)
+                'INSERT INTO exercise (userid, details, duration, date_of) VALUES (?, ?, ?, date(?))',
+                (userid, details, duration, date)
             )
             db.commit()
             # return the json data of your new exercise
-            return redirect(url_for('user.user_exercises', userid=g.user['user_id']))
+            return redirect(url_for('user.user_exercises', userid=g.user['userid']))
             
         else:
             for error in errors:
@@ -86,7 +86,7 @@ def delete_exercise(exerciseid):
 
 
     db = get_db()
-    userid = g.user['user_id']
+    userid = g.user['userid']
     db.execute(
         'DELETE FROM exercise WHERE id=?',
         (exerciseid,)
@@ -102,10 +102,10 @@ def edit_exercise(exerciseid):
     """ Simple route for editing a given exercise record. """
 
     db = get_db()
-    userid = g.user['user_id']
+    userid = g.user['userid']
 
     exercise_to_edit = db.execute(
-        'SELECT * FROM exercise WHERE id=? AND user_id=?',
+        'SELECT * FROM exercise WHERE id=? AND userid=?',
         (exerciseid, userid)
     ).fetchone()
 
@@ -125,7 +125,7 @@ def get_users():
     all_users = []
 
     for user in users:
-        all_users.append({"username": user['username'], "user_id": user['user_id']})
+        all_users.append({"username": user['username'], "userid": user['userid']})
 
     return jsonify(all_users)
 

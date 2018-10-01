@@ -7,7 +7,7 @@
 <ul>
 {% for user in users %}
     <li>{{user.username}}</li>
-    <a href="{{url_for('user.user_profile', userid=user.user_id)}}"">Profile</a>
+    <a href="{{url_for('user.user_profile', userid=user.userid)}}"">Profile</a>
 {% endfor %}
 </ul>
 

@@ -37,7 +37,7 @@ def create_app(test_config=None):
         """ When a person arrives at the site, they are immediatelly redirected to login. UNLESS they were previously logged in, in which case they are sent to their profile. """
 
         if g.user:
-            return redirect(url_for('user.user_profile', userid=g.user['user_id']))
+            return redirect(url_for('user.user_profile', userid=g.user['userid']))
         else:
             return redirect(url_for('auth.login'))
             
