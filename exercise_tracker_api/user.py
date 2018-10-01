@@ -16,6 +16,7 @@ from exercise_tracker_api.db import get_db
 bp = Blueprint('user', __name__, url_prefix='/user')
 
 @bp.route('/', methods=['GET'])
+@login_required
 def all_users():
 
     db = get_db()
@@ -28,7 +29,9 @@ def all_users():
 
 # Define a route that is responsible for handling adding users to the database.
 @bp.route('/<userid>/profile', methods=['GET', 'POST'])
+@login_required
 def user_profile(userid):
+
     # get the database
     db = get_db()
     
@@ -50,6 +53,7 @@ def user_profile(userid):
 @bp.route('/<userid>/exercises', methods=['GET'])
 @login_required
 def user_exercises(userid):
+    
     # get the database
     db = get_db()
 
