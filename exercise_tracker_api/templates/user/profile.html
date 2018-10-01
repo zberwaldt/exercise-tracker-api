@@ -12,25 +12,13 @@
 {% endif %}
     {% if user is not none %}
     <article class="user profile">
-    <h3> {{user.username}}'s Profile </h3>
+    <h2> {{user.username}}'s Profile </h2>
     <section class="info">
-        <h4>User Bio</h4>
+        <h3>User Bio</h3>
         <hr/>
-        {% if user.firstname and user.lastname %}
-            Hello, {{ firstname }} {{ lastname }}
-        {% endif %}
-        {% if not user.bio %}
-            <p>
-                {{user.bio}}
-            </p>    
-        {% else %}
-            <p>
-                No bio
-            </p>
-        {% endif %}
     </section>
     <section class="social">
-        <h4>User Social</h4>
+        <h3>User Social</h3>
         <hr />
         <span>Twitter:</span>
         {% if user.twitter %}
@@ -47,14 +35,39 @@
         No github
         {% endif %}
     </section>
+    <section class="exercise-list" data-id="{{ user.userid }}">
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="6">Exercises</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td scope="col">ID</td>
+                    <td scope="col">Details</td>
+                    <td scope="col">Duration</td>
+                    <td scope="col">Date</td>
+                    {% if user.userid == g.user['user_id'] %}
+                    <td scope="col">Edit</td>
+                    <td scope="col">Delete</td>
+                    {% endif %}
+                </tr>
+                <tr class="exercise">
+                    <td colspan="6">No exercises logged yet.</td>
+                </tr>
+            </tbody>
+        </table>
+        
+    {% if user.userid == g.user['user_id'] %}
+        <a href="{{url_for('api.add_exercises')}}">Add Exercise</a>
+    {% endif %}
+    </section>
     {% else %}
         <p>This user has not created their profile yet.</p>
         <a href="{{url_for('index')}}">Home</a>
     {% endif %}
     {% if user.user_id == g.user['user_id'] and g.user %}
-    <form id="edit-profile" action="{{ url_for('api.add_profile', user=user)}}">
-        <input type="submit" value="Edit Profile"/>
-    </form>
     <form id="delete-account" action="{{ url_for('auth.delete_account')}}">
         <input type="submit" value="Delete Account"/>
     </form>
