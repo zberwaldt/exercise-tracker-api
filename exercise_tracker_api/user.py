@@ -37,8 +37,8 @@ def user_profile(userid):
         (userid,)
     ).fetchone()
 
-    
-
+    if user is None:
+        return render_template('errors/404.html'), 404
     if user is not None or not g.user or g.user['user_id'] != userid:
         return render_template('user/profile.html', user=user)
     else:
