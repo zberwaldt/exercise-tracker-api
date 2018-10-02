@@ -84,12 +84,11 @@ def delete_exercise(exerciseid):
 
     """ Simple ajax route for deleting a exercise from the database for a user """
 
-
     db = get_db()
     userid = g.user['userid']
     db.execute(
-        'DELETE FROM exercise WHERE id=?',
-        (exerciseid,)
+        'DELETE FROM exercise WHERE id=? AND userid=?',
+        (exerciseid, userid)
     )
     db.commit()
     flash('Exercise Deleted')
