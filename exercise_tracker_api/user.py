@@ -3,7 +3,7 @@ import datetime
 import uuid
 
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for, jsonify
+    Blueprint, flash, g, redirect, render_template, request, session, url_for, jsonify, abort
 )
 
 # import login required decorator
@@ -26,6 +26,22 @@ def all_users():
     ).fetchall()
 
     return render_template('user/user_list.html', users=users)
+
+@bp.route('/<userid>/profile/edit', methods=('GET', 'POST'))
+@login_required
+def edit_profile(userid):
+    if request.method == 'GET':
+        if userid == g.user['userid']:
+            db = get_db()
+            user = db.execute(
+                'SELECT * FROM user WHERE userid=?',
+                (userid,)
+            ).fetchone()
+            return render_template('user/edit_profile.html', user=user)
+        else:
+            abort(401)
+    else:
+        pass
 
 # Define a route that is responsible for handling adding users to the database.
 @bp.route('/<userid>/profile', methods=['GET', 'POST'])

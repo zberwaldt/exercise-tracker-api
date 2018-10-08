@@ -60,6 +60,7 @@
         </table>
         
     {% if user.userid == g.user['userid'] %}
+        <a href="{{url_for('user.edit_profile', userid=user.userid)}}">Edit Profile</a>
         <a href="{{url_for('api.add_exercises')}}">Add Exercise</a>
     {% endif %}
     </section>
