@@ -16,6 +16,11 @@
     <section class="info">
         <h3>User Bio</h3>
         <hr/>
+        {% if user.bio %}
+        <p>{{ user.bio }}</p>
+        {% else %}
+        <p> No Bio. </p>
+        {% endif %}
     </section>
     <section class="social">
         <h3>User Social</h3>
@@ -24,15 +29,21 @@
         {% if user.twitter %}
         <a rel="noopenner" 
         target="_blank" 
-        href="{{user.twitter}}">Twitter</a>
+        href="https://www.twitter.com/{{user.twitter}}">@{{ user.twitter }}</a>
         {% else %}
         No twitter
         {% endif %}
-        <span>Github:</span>
-        {% if user.github %}
-        <a rel="noopenner" target="_blank" href="{{user.github}}">Github</a>
+        <span>Facebook:</span>
+        {% if user.facebook %}
+        <a rel="noopenner" target="_blank" href="https://www.facebook.com/{{user.facebook}}">{{ user.facebook }}</a>
         {% else %}
-        No github
+        No facebook
+        {% endif %}
+        <span>Instagram:</span>
+        {% if user.instagram %}
+        <a rel="noopenner" target="_blank" href="https://www.instagram.com/{{user.instagram}}">{{ user.instagram }}</a>
+        {% else %}
+        No instagram
         {% endif %}
     </section>
     <section class="exercise-list" data-id="{{ user.userid }}">
@@ -58,11 +69,10 @@
                 </tr>
             </tbody>
         </table>
-        
-    {% if user.userid == g.user['userid'] %}
-        <a href="{{url_for('user.edit_profile', userid=user.userid)}}">Edit Profile</a>
-        <a href="{{url_for('api.add_exercises')}}">Add Exercise</a>
-    {% endif %}
+        {% if user.userid == g.user['userid'] %}
+            <a href="{{url_for('user.edit_profile', userid=user.userid)}}">Edit Profile</a>
+            <a href="{{url_for('api.add_exercises')}}">Add Exercise</a>
+        {% endif %}
     </section>
     {% else %}
         <p>This user has not created their profile yet.</p>

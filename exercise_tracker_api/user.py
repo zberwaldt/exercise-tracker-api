@@ -30,9 +30,10 @@ def all_users():
 @bp.route('/<userid>/profile/edit', methods=('GET', 'POST'))
 @login_required
 def edit_profile(userid):
+    db = get_db()
     if request.method == 'GET':
         if userid == g.user['userid']:
-            db = get_db()
+            
             user = db.execute(
                 'SELECT * FROM user WHERE userid=?',
                 (userid,)
@@ -41,7 +42,37 @@ def edit_profile(userid):
         else:
             abort(401)
     else:
-        pass
+        bio = request.form['bio']
+        twitter = request.form['twitter']
+        facebook = request.form['facebook']
+        instagram = request.form['instagram']
+
+        dbquery = 'UPDATE user SET '
+        dbparams = []
+
+        if bio:
+            dbquery += "bio = ?,"
+            dbparams.append(bio)
+        if twitter:
+            dbquery += "twitter = ?,"
+            dbparams.append(twitter)
+        if facebook:
+            dbquery += "facebook = ?,"
+            dbparams.append(facebook)
+        if instagram:
+            dbquery += "instagram = ?"            
+            dbparams.append(instagram)
+
+        dbquery += ' WHERE userid = ?'
+        dbparams.append(g.user['userid'])
+        print(dbquery)
+        print(dbparams)
+        db.execute(
+            dbquery,
+            dbparams
+        )
+        db.commit()
+        return redirect(url_for('user.user_profile', userid=g.user['userid']))
 
 # Define a route that is responsible for handling adding users to the database.
 @bp.route('/<userid>/profile', methods=['GET', 'POST'])

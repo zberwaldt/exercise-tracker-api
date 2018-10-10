@@ -6,44 +6,33 @@
       method="POST" 
       autocomplete="off">
     <h2>Edit {{ user.username }}'s Profile</h2>
-    <label for="firstname">
-        First name:
-        <input type="text" 
-               name="firstname" 
-               id="firstname" 
-               placeholder="firstname" 
-               pattern="\w+">
-    </label>
-    <label for="lastname">
-        Last name:
-        <input type="text" 
-               name="lastname" 
-               id="lastname" 
-               placeholder="lastname" 
-               pattern="\w+">
-    </label>
     <label for="bio">
         Bio:
         <textarea id="bio" 
-                  name="bio" 
-                  placeholder="bio" 
-                  pattern="\w+">
+                  name="bio">
+tell us about yourself...
         </textarea>
     </label>
     <label for="twitter">
         Twitter:
-        <input type="url" 
+        <input type="text" 
                name="twitter" 
-               id="twitter" 
-               placeholder="twitter" 
-               pattern="https://twitter.com/\w+">
+               id="twitter"
+               value="{% if user.twitter %}{{user.twitter}}{% else %}twitter{% endif %}">
     </label>
-    <label for="github">
-        Github:
-        <input type="url" 
-               name="github" 
-               id="github" 
-               pattern="https://github.com/\w+">
+    <label for="facebook">
+        Facebook:
+        <input type="text" 
+               name="facebook" 
+               id="facebook"
+               value="{% if user.facebook %}{{user.facebook}}{% else %}facebook{% endif %}">
+    </label>
+    <label for="instagram">
+        Instagram:
+        <input type="text" 
+               name="instagram" 
+               id="instagram"
+               value="{% if user.instagram %}{{user.instagram}}{% else %}instagram{% endif %}">
     </label>
     <input type="submit" value="create profile">
 </form>
