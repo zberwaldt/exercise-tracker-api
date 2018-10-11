@@ -9,30 +9,32 @@
     <label for="bio">
         Bio:
         <textarea id="bio" 
-                  name="bio">
-tell us about yourself...
-        </textarea>
+                  name="bio"
+                  placeholder="Describe yourself here...">{% if user.bio %}{{ user.bio }}{% endif %}</textarea>
     </label>
     <label for="twitter">
         Twitter:
         <input type="text" 
                name="twitter" 
                id="twitter"
-               value="{% if user.twitter %}{{user.twitter}}{% else %}twitter{% endif %}">
+               placeholder="twitter handle"
+               value="{% if user.twitter %}{{user.twitter}}{% endif %}">
     </label>
     <label for="facebook">
         Facebook:
         <input type="text" 
                name="facebook" 
                id="facebook"
-               value="{% if user.facebook %}{{user.facebook}}{% else %}facebook{% endif %}">
+               placeholder="facebook profile"
+               value="{% if user.facebook %}{{user.facebook}}{% endif %}">
     </label>
     <label for="instagram">
         Instagram:
         <input type="text" 
                name="instagram" 
                id="instagram"
-               value="{% if user.instagram %}{{user.instagram}}{% else %}instagram{% endif %}">
+               placeholder="instagram username"
+               value="{% if user.instagram %}{{user.instagram}}{% endif %}">
     </label>
     <input type="submit" value="create profile">
 </form>
